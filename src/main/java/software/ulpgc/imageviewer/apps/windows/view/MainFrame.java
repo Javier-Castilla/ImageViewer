@@ -31,6 +31,7 @@ public class MainFrame extends JFrame {
 
     private JPanel createToolbar() {
         JPanel panel = new JPanel(new FlowLayout());
+        panel.add(createButton("Reload"));
         panel.add(createButton("Previous"));
         panel.add(createButton("Next"));
         return panel;

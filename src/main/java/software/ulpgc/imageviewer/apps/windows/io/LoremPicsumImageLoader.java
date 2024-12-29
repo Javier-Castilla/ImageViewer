@@ -12,26 +12,28 @@ import java.util.Random;
 public class LoremPicsumImageLoader implements ImageLoader {
     private static final String BASE_URL = "https://picsum.photos/";
     private static final Random RANDOM = new Random();
-    private final int maxSize;
+    private final int maxWidth;
+    private final int maxHeight;
     private final byte[][] files;
 
-    private LoremPicsumImageLoader(int maxSize, int images) {
-        this.maxSize = maxSize;
+    private LoremPicsumImageLoader(int maxWidth, int maxHeight, int images) {
+        this.maxWidth = maxWidth;
+        this.maxHeight = maxHeight;
         this.files = new byte[images][];
     }
 
-    public static LoremPicsumImageLoader with(int maxSize, int numberOfImages) {
-        return new LoremPicsumImageLoader(maxSize, numberOfImages);
+    public static LoremPicsumImageLoader with(int maxWidth, int maxHeight, int numberOfImages) {
+        return new LoremPicsumImageLoader(maxWidth, maxHeight, numberOfImages);
     }
 
-    private String getRandomSize() {
+    private String getRandomSize(int maxSize) {
         return String.valueOf(RANDOM.nextInt(maxSize / 2, maxSize));
     }
 
     @Override
     public Image load() {
         for (int i = 0; i < files.length; i++)
-            try (InputStream inputStream = new URL(BASE_URL + getRandomSize()).openStream();) {
+            try (InputStream inputStream = new URL(BASE_URL + getRandomSize(maxWidth) + "/" + getRandomSize(maxHeight)).openStream();) {
                  files[i] = inputStream.readAllBytes();
             } catch (IOException e) {
                 throw new RuntimeException(e);

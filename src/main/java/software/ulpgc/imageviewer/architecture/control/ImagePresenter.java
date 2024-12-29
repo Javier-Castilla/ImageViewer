@@ -24,12 +24,20 @@ public class ImagePresenter {
         );
     }
 
-    private ImageDisplay.PaintOrder paintOrderForCurrentImageWith(int offset) {
-        return new ImageDisplay.PaintOrder(imageHolder.get().content(), offset);
+    private ImageDisplay.Released released() {
+        return offset -> {
+            if (isDisplayingCurrentImageWith(offset))
+                imageHolder.set(offset > 0 ? imageHolder.get().previous() : imageHolder.get().next());
+            imageDisplay.paint(paintOrderForCurrentImageWith(0));
+        };
     }
 
     private ImageDisplay.PaintOrder paintOrderForPreviousImageWith(int offset) {
         return new ImageDisplay.PaintOrder(imageHolder.get().previous().content(), offset);
+    }
+
+    private ImageDisplay.PaintOrder paintOrderForCurrentImageWith(int offset) {
+        return new ImageDisplay.PaintOrder(imageHolder.get().content(), offset);
     }
 
     private ImageDisplay.PaintOrder paintOrderForNextImageWith(int offset) {
@@ -38,13 +46,6 @@ public class ImagePresenter {
 
     private boolean isDisplayingPreviousImage(int offset) {
         return offset > 0;
-    }
-
-    private ImageDisplay.Released released() {
-        return offset -> {
-            if (isDisplayingCurrentImageWith(offset))
-                imageDisplay.paint(paintOrderForCurrentImageWith(offset));
-        };
     }
 
     private boolean isDisplayingCurrentImageWith(int offset) {

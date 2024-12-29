@@ -5,14 +5,17 @@ import software.ulpgc.imageviewer.apps.windows.view.MainFrame;
 import software.ulpgc.imageviewer.architecture.control.ImagePresenter;
 import software.ulpgc.imageviewer.architecture.control.NextCommand;
 import software.ulpgc.imageviewer.architecture.control.PreviousCommand;
+import software.ulpgc.imageviewer.architecture.control.ReloadCommand;
 
 public class Main {
     public static void main(String[] args) {
         MainFrame mainFrame = new MainFrame();
         ImagePresenter presenter = new ImagePresenter(mainFrame.imageDisplay());
-        presenter.show(LoremPicsumImageLoader.with(mainFrame.getWidth(), 5).load());
+        LoremPicsumImageLoader loader = LoremPicsumImageLoader.with(mainFrame.getWidth(), mainFrame.getHeight(), 10);
+        presenter.show(loader.load());
         mainFrame.add("previous", new PreviousCommand(presenter))
                 .add("next", new NextCommand(presenter))
+                .add("reload", new ReloadCommand(presenter, loader))
                 .setVisible(true);
     }
 }
