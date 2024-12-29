@@ -1,6 +1,7 @@
 package software.ulpgc.imageviewer.apps.windows.view;
 
 import software.ulpgc.imageviewer.architecture.view.ImageDisplay;
+import software.ulpgc.imageviewer.architecture.view.ViewPort;
 import software.ulpgc.imageviewer.io.ImageDeserializer;
 
 import javax.swing.*;
@@ -12,9 +13,10 @@ import java.util.List;
 
 public class SwingImageDisplay extends JPanel implements ImageDisplay {
     private final ImageDeserializer deserializer;
-    private final List<PaintOrder> paintOrders;
     private Shift shift;
     private Released released;
+    private int initX;
+    private final List<PaintOrder> paintOrders;
 
     public SwingImageDisplay(ImageDeserializer deserializer) {
         this.deserializer = deserializer;
@@ -29,7 +31,7 @@ public class SwingImageDisplay extends JPanel implements ImageDisplay {
         return new MouseAdapter() {
             @Override
             public void mouseDragged(MouseEvent e) {
-                super.mouseDragged(e);
+                shift.offset(e.getX() - initX);
             }
         };
     }
@@ -38,12 +40,12 @@ public class SwingImageDisplay extends JPanel implements ImageDisplay {
         return new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                super.mousePressed(e);
+                initX = e.getX();
             }
 
             @Override
             public void mouseReleased(MouseEvent e) {
-                super.mouseReleased(e);
+                released.offset(e.getX() - initX);
             }
         };
     }
@@ -64,6 +66,9 @@ public class SwingImageDisplay extends JPanel implements ImageDisplay {
         g.fillRect(0, 0, width(), height());
         paintOrders.forEach(o -> {
             Image image = deserialize(o.content());
+            ViewPort viewPort = ViewPort.ofSize(getWidth(), getHeight())
+                    .fit(image.getWidth(null), image.getHeight(null));
+            g.drawImage(image, viewPort.x() + o.offset(), viewPort.y(), viewPort.width(), viewPort.height(), null);
         });
     }
 
