@@ -26,7 +26,7 @@ public class SwingSizeDialog extends JPanel implements SizeDialog {
     }
 
     private JSlider createSlider() {
-        return new JSlider(JSlider.VERTICAL, 400, getLocalMaxResolution().width(), getLocalMaxResolution().width() / 2);
+        return new JSlider(JSlider.VERTICAL, 400, getLocalMaxResolution().width(), getLocalMaxResolution().height() / 2);
     }
 
     private JPanel createSliderPanel(String name, JSlider slider) {

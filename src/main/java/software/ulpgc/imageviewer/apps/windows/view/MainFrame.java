@@ -99,13 +99,13 @@ public class MainFrame extends JFrame {
         return loadingDisplay;
     }
 
+    public SizeDialog sizeDialog() {
+        return sizeDialog;
+    }
+
     @Override
     public void setVisible(boolean b) {
         super.setVisible(b);
         commands.get("reload").execute();
-    }
-
-    public SizeDialog sizeDialog() {
-        return sizeDialog;
     }
 }
