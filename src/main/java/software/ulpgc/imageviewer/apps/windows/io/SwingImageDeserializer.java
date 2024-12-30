@@ -1,6 +1,6 @@
 package software.ulpgc.imageviewer.apps.windows.io;
 
-import software.ulpgc.imageviewer.io.ImageDeserializer;
+import software.ulpgc.imageviewer.architecture.io.ImageDeserializer;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;

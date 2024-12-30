@@ -11,11 +11,10 @@ public class Main {
     public static void main(String[] args) {
         MainFrame mainFrame = new MainFrame();
         ImagePresenter presenter = new ImagePresenter(mainFrame.imageDisplay());
-        LoremPicsumImageLoader loader = LoremPicsumImageLoader.with(mainFrame.getWidth(), mainFrame.getHeight(), 10);
-        presenter.show(loader.load());
+        LoremPicsumImageLoader loader = LoremPicsumImageLoader.with(10);
         mainFrame.add("previous", new PreviousCommand(presenter))
                 .add("next", new NextCommand(presenter))
-                .add("reload", new ReloadCommand(presenter, loader))
+                .add("reload", new ReloadCommand(presenter, loader, mainFrame.sizeDialog(), mainFrame.loadingDisplay()))
                 .setVisible(true);
     }
 }

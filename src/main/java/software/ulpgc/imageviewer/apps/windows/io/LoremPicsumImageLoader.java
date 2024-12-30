@@ -2,28 +2,23 @@ package software.ulpgc.imageviewer.apps.windows.io;
 
 import software.ulpgc.imageviewer.architecture.io.ImageLoader;
 import software.ulpgc.imageviewer.architecture.model.Image;
+import software.ulpgc.imageviewer.architecture.model.Size;
 
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.net.URL;
-import java.util.Arrays;
 import java.util.Random;
 
 public class LoremPicsumImageLoader implements ImageLoader {
     private static final String BASE_URL = "https://picsum.photos/";
     private static final Random RANDOM = new Random();
-    private final int maxWidth;
-    private final int maxHeight;
     private final byte[][] files;
 
-    private LoremPicsumImageLoader(int maxWidth, int maxHeight, int images) {
-        this.maxWidth = maxWidth;
-        this.maxHeight = maxHeight;
+    private LoremPicsumImageLoader(int images) {
         this.files = new byte[images][];
     }
 
-    public static LoremPicsumImageLoader with(int maxWidth, int maxHeight, int numberOfImages) {
-        return new LoremPicsumImageLoader(maxWidth, maxHeight, numberOfImages);
+    public static LoremPicsumImageLoader with(int numberOfImages) {
+        return new LoremPicsumImageLoader(numberOfImages);
     }
 
     private String getRandomSize(int maxSize) {
@@ -31,9 +26,9 @@ public class LoremPicsumImageLoader implements ImageLoader {
     }
 
     @Override
-    public Image load() {
+    public Image loadWithMaximumSize(Size size) {
         for (int i = 0; i < files.length; i++)
-            try (InputStream inputStream = new URL(BASE_URL + getRandomSize(maxWidth) + "/" + getRandomSize(maxHeight)).openStream();) {
+            try (InputStream inputStream = new URL(BASE_URL + getRandomSize(size.width()) + "/" + getRandomSize(size.height())).openStream();) {
                  files[i] = inputStream.readAllBytes();
             } catch (IOException e) {
                 throw new RuntimeException(e);

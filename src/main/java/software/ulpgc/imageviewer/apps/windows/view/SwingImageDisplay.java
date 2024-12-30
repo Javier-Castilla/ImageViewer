@@ -1,8 +1,8 @@
 package software.ulpgc.imageviewer.apps.windows.view;
 
+import software.ulpgc.imageviewer.architecture.io.ImageDeserializer;
 import software.ulpgc.imageviewer.architecture.view.ImageDisplay;
 import software.ulpgc.imageviewer.architecture.view.ViewPort;
-import software.ulpgc.imageviewer.io.ImageDeserializer;
 
 import javax.swing.*;
 import java.awt.*;
@@ -66,7 +66,7 @@ public class SwingImageDisplay extends JPanel implements ImageDisplay {
         g.fillRect(0, 0, width(), height());
         paintOrders.forEach(o -> {
             Image image = deserialize(o.content());
-            ViewPort viewPort = ViewPort.ofSize(getWidth(), getHeight())
+            ViewPort viewPort = ViewPort.ofSize(width(), height())
                     .fit(image.getWidth(null), image.getHeight(null));
             g.drawImage(image, viewPort.x() + o.offset(), viewPort.y(), viewPort.width(), viewPort.height(), null);
         });
